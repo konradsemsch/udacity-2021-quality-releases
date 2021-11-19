@@ -9,11 +9,11 @@ stages:
       name: Hosted Ubuntu 1604
     steps:
     # Needed for Terraform VM deployment
-    # - task: InstallSSHKey@0
-    #   inputs:
-    #     knownHostsEntry: 'KNOWN_HOSTS_STRING'
-    #     sshPublicKey: 'PUBLIC_KEY'
-    #     sshKeySecureFile: 'id_rsa'
+    - task: InstallSSHKey@0
+      inputs:
+        knownHostsEntry: 'udacity ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHF0OdPtZvHRG/Qmae6aXhHQDklRXl6kXzq/I9n44utA'
+        sshPublicKey: '$(myPubKey)'
+        sshKeySecureFile: 'udacity'
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
       inputs:
