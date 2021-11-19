@@ -22,7 +22,7 @@ resource "azurerm_linux_virtual_machine" "test" {
   ]
   admin_ssh_key {
     username   = "konradino"
-    public_key = file("~/.ssh/private/id_rsa.pub")
+    public_key = file("~/.ssh/private/udacity.pub")
   }
   os_disk {
     caching           = "ReadWrite"
