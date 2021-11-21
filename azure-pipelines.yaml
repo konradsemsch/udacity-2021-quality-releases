@@ -1,7 +1,7 @@
 
 
 trigger:
-- main
+- master
 
 name: Azure Pipelines
 variables:
