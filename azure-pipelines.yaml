@@ -49,12 +49,10 @@ stages:
         provider: 'azurerm'
         command: 'init'
         backendServiceArm: 'quality-releases-service-connection'
-        # backendAzureRmResourceGroupName: 'tfstate'
-        # backendAzureRmStorageAccountName: 'tfstate18342'
-        # backendAzureRmContainerName: 'tfstate'
-        # backendAzureRmKey: 'dev.terraform.tfstate'
-        commandOptions: '-var-file=$(tfvars.secureFilePath)'
-        workingDirectory: './terraform'
+        backendAzureRmResourceGroupName: '$(TF_BACKEND_RG)'
+        backendAzureRmStorageAccountName: '$(TF_BACKEND_STORAGE_ACCOUNT)'
+        backendAzureRmContainerName: '$(TF_BACKEND_CONTAINER)'
+        backendAzureRmKey: '$(TF_BACKEND_KEY)'
     - task: TerraformTaskV1@0
       displayName: Terraform apply
       inputs:
