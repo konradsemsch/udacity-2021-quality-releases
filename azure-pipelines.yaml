@@ -48,7 +48,7 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        # backendServiceArm: 'Terraform'
+        backendServiceArm: 'Terraform'
         # backendAzureRmResourceGroupName: 'tfstate'
         # backendAzureRmStorageAccountName: 'tfstate18342'
         # backendAzureRmContainerName: 'tfstate'
