@@ -60,6 +60,7 @@ stages:
     - script: |
         mkdir -p ~/.ssh/private
         cp $(udacity.secureFilePath) ~/.ssh/private/udacity.pub
+        ls ~/.ssh/private -la
       displayName: Add udacity.pub to .ssh
     - script: |
         cd terraform
