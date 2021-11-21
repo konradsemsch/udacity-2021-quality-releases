@@ -34,7 +34,7 @@ stages:
         ls terraform -la
       displayName: Add terraform.tfvars to WD
     # Install Terraform
-    - task: TerraformInstaller
+    - task: TerraformInstaller@0
       displayName: Install terraform
       inputs:
           terraformVersion: 1.0.11
