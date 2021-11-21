@@ -1,7 +1,27 @@
+
+
+trigger:
+- main
+
+variables:
+  vmImageName: 'ubuntu-latest'
+
 name: Azure Pipelines
 variables:
   python.version: '3.7.6'
 stages:
+- stage: Provision
+  jobs:
+  - job: Provision
+    displayName: Provision Infrastructure
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: DownloadSecureFile@1
+      name: tfvars
+      displayName: Download terraform.tfvars
+      inputs:
+        secureFile: 'terraform.tfvars'
 - stage: Build
   jobs:
   - job: Build
