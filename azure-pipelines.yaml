@@ -43,7 +43,9 @@ stages:
     - task: TerraformTaskV1@0
       displayName: Verify Terraform version
       inputs:
-        command: version
+        provider: 'azurerm'
+        command: 'version'
+        workingDirectory: 'terraform'
       
 - stage: Build
   jobs:
