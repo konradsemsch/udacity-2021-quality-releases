@@ -45,12 +45,13 @@ stages:
     - task: AzureCLI@2
       displayName: Azure CLI
       inputs:
-        azureSubscription: 'Terraform'
+        azureSubscription: 'quality-releases-service-connection'
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
           cd terraform
-          terraform init
+          ls -la
+          terraform init -backend-config="terraform.tfvars"
     # - script: |
     #     cd terraform 
     #     terraform init
