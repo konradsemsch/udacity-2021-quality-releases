@@ -18,11 +18,16 @@ stages:
       vmImage: $(vmImageName)
     steps:
     # Get securely the ssh key
-    - task: InstallSSHKey@0
+    # - task: InstallSSHKey@0
+    #   inputs:
+    #     knownHostsEntry: '$(KNOWN_HOST_STRING)'
+    #     # sshPublicKey: '$(PUBLIC_KEY)'
+    #     sshKeySecureFile: 'udacity'
+    - task: DownloadSecureFile@1
+      name: udacity
+      displayName: Download udacity public key
       inputs:
-        knownHostsEntry: '$(KNOWN_HOST_STRING)'
-        # sshPublicKey: '$(PUBLIC_KEY)'
-        sshKeySecureFile: 'udacity'
+        secureFile: 'udacity'
     # Install Terraform
     - task: TerraformInstaller@0
       displayName: Install terraform
@@ -52,10 +57,9 @@ stages:
           cd terraform
           ls -la
           terraform init -backend-config="terraform.tfvars"
-    # - script: |
-    #     cd terraform 
-    #     terraform init
-    #   displayName: Terraform init
+    - script: |
+        cp $(udacity.secureFilePath) ~/.ssh/private/udacity.pub
+      displayName: Add udacity.pub to .ssh
     - script: |
         cd terraform
         terraform apply -auto-approve
