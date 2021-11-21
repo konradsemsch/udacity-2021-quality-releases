@@ -24,16 +24,11 @@ stages:
         # sshPublicKey: '$(PUBLIC_KEY)'
         sshKeySecureFile: 'udacity'
     # Get securely terraform.tfvars file from Azure
-    - task: DownloadSecureFile@1
-      name: tfvars
-      displayName: Download terraform.tfvars
-      inputs:
-        secureFile: 'terraform.tfvars'
     # Add terraform.tfvars to WD
-    - bash: |
-        cp $(tfvars.secureFilePath) $(projectRoot)/terraform
-        ls terraform -la
-      displayName: Add terraform.tfvars to WD
+    # - bash: |
+    #     cp $(tfvars.secureFilePath) $(projectRoot)/terraform
+    #     ls terraform -la
+    #   displayName: Add terraform.tfvars to WD
     # Install Terraform
     - task: TerraformInstaller@0
       displayName: Install terraform
@@ -42,12 +37,29 @@ stages:
     # Check Terraform version
     - bash: |
         terraform --version
-    # - task: TerraformTaskV1@0
-    #   displayName: Verify Terraform version
-    #   inputs:
-    #     provider: 'azurerm'
-    #     command: 'version'
-    #     workingDirectory: 'terraform'
+      displayName: Confirm Terraform version
+    - task: DownloadSecureFile@1
+      name: tfvars
+      displayName: Download terraform.tfvars
+      inputs:
+        secureFile: 'terraform.tfvars'
+    - task: TerraformTaskV1@0
+      displayName: Terraform init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        # backendServiceArm: 'udacityproj-tfm'
+        # backendAzureRmResourceGroupName: 'ud-proj-state'
+        # backendAzureRmStorageAccountName: 'udprojtfstate'
+        # backendAzureRmContainerName: 'tfstate'
+        # backendAzureRmKey: 'key1'
+        workingDirectory: './terraform'
+    - task: TerraformTaskV1@0
+      displayName: Terraform apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        commandOptions: '-var-file=$(tfvars.secureFilePath)'
       
 - stage: Build
   jobs:
