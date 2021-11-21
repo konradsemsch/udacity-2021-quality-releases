@@ -6,7 +6,8 @@ trigger:
 name: Azure Pipelines
 variables:
   vmImageName: 'ubuntu-latest'
-  python.version: '3.7.6'
+  projectRoot: $(System.DefaultWorkingDirectory)
+  pythonVersion: '3.7.6'
   
 stages:
 - stage: Provision
@@ -22,14 +23,16 @@ stages:
       displayName: Download terraform.tfvars
       inputs:
         secureFile: 'terraform.tfvars'
+    # Add terraform.tfvars to WD
+    - bash: |
+        cp $(tfvars.secureFilePath) $(projectRoot)/terraform
+        ls -la
+      displayName: Add terraform.tfvars to WD
     # Get securely the ssh key
     - task: InstallSSHKey@0
       inputs:
         knownHostsEntry: 'udacity ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHF0OdPtZvHRG/Qmae6aXhHQDklRXl6kXzq/I9n44utA'
-        # sshPublicKey: '$(myPubKey)'
         sshKeySecureFile: 'udacity'
-    - bash: |
-        ls -la
       
 - stage: Build
   jobs:
