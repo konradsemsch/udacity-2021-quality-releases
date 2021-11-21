@@ -3,12 +3,11 @@
 trigger:
 - main
 
-variables:
-  vmImageName: 'ubuntu-latest'
-
 name: Azure Pipelines
 variables:
+  vmImageName: 'ubuntu-latest'
   python.version: '3.7.6'
+  
 stages:
 - stage: Provision
   jobs:
