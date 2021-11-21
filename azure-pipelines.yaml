@@ -42,10 +42,19 @@ stages:
         cp $(tfvars.secureFilePath) $(projectRoot)/terraform
         ls terraform -la
       displayName: Add terraform.tfvars to WD
-    - script: |
-        cd terraform 
-        terraform init
-      displayName: Terraform init
+    - task: AzureCLI@2
+      displayName: Azure CLI
+      inputs:
+        azureSubscription: 'quality-releases-service-connection'
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          cd terraform
+          terraform init
+    # - script: |
+    #     cd terraform 
+    #     terraform init
+    #   displayName: Terraform init
     - script: |
         cd terraform
         terraform apply -auto-approve
