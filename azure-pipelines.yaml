@@ -16,15 +16,17 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    # Get securely terraform.tfvars file from Azure
     - task: DownloadSecureFile@1
       name: tfvars
       displayName: Download terraform.tfvars
       inputs:
         secureFile: 'terraform.tfvars'
+    # Get securely the ssh key
     - task: InstallSSHKey@0
       inputs:
         knownHostsEntry: 'udacity ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHF0OdPtZvHRG/Qmae6aXhHQDklRXl6kXzq/I9n44utA'
-        sshPublicKey: '$(myPubKey)'
+        # sshPublicKey: '$(myPubKey)'
         sshKeySecureFile: 'udacity'
     - bash: |
         ls -la
