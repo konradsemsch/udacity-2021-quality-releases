@@ -23,12 +23,6 @@ stages:
         knownHostsEntry: '$(KNOWN_HOST_STRING)'
         # sshPublicKey: '$(PUBLIC_KEY)'
         sshKeySecureFile: 'udacity'
-    # Get securely terraform.tfvars file from Azure
-    # Add terraform.tfvars to WD
-    # - bash: |
-    #     cp $(tfvars.secureFilePath) $(projectRoot)/terraform
-    #     ls terraform -la
-    #   displayName: Add terraform.tfvars to WD
     # Install Terraform
     - task: TerraformInstaller@0
       displayName: Install terraform
@@ -43,25 +37,38 @@ stages:
       displayName: Download terraform.tfvars
       inputs:
         secureFile: 'terraform.tfvars'
-    - task: TerraformTaskV2@0
+    # Get securely terraform.tfvars file from Azure
+    - script: |
+        cp $(tfvars.secureFilePath) $(projectRoot)/terraform
+        ls terraform -la
+      displayName: Add terraform.tfvars to WD
+    - script: |
+        cd terraform 
+        terraform init
       displayName: Terraform init
-      inputs:
-        provider: 'azurerm'
-        command: 'init'
-        backendServiceArm: 'quality-releases-service-connection'
-        backendAzureRmResourceGroupName: '$(TF_BACKEND_RG)'
-        backendAzureRmStorageAccountName: '$(TF_BACKEND_STORAGE_ACCOUNT)'
-        backendAzureRmContainerName: '$(TF_BACKEND_CONTAINER)'
-        backendAzureRmKey: '$(TF_BACKEND_KEY)'
-        workingDirectory: '$(projectRoot)/terraform'
-    - task: TerraformTaskV2@0
+    - script: |
+        cd terraform
+        terraform apply -auto-approve
       displayName: Terraform apply
-      inputs:
-        provider: 'azurerm'
-        command: 'apply'
-        commandOptions: '-auto-approve -var-file=$(tfvars.secureFilePath)'
-        environmentServiceNameAzureRM: 'quality-releases-service-connection'
-        workingDirectory: '$(projectRoot)/terraform'
+    # - task: TerraformTaskV2@2
+    #   displayName: Terraform init
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'init'
+    #     backendServiceArm: 'quality-releases-service-connection'
+    #     backendAzureRmResourceGroupName: '$(TF_BACKEND_RG)'
+    #     backendAzureRmStorageAccountName: '$(TF_BACKEND_STORAGE_ACCOUNT)'
+    #     backendAzureRmContainerName: '$(TF_BACKEND_CONTAINER)'
+    #     backendAzureRmKey: '$(TF_BACKEND_KEY)'
+    #     workingDirectory: '$(projectRoot)/terraform'
+    # - task: TerraformTaskV2@2
+    #   displayName: Terraform apply
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'apply'
+    #     commandOptions: '-auto-approve -var-file=$(tfvars.secureFilePath)'
+    #     environmentServiceNameAzureRM: 'quality-releases-service-connection'
+    #     workingDirectory: '$(projectRoot)/terraform'
       
 - stage: Build
   jobs:
