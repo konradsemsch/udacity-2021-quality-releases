@@ -53,13 +53,14 @@ stages:
         backendAzureRmStorageAccountName: '$(TF_BACKEND_STORAGE_ACCOUNT)'
         backendAzureRmContainerName: '$(TF_BACKEND_CONTAINER)'
         backendAzureRmKey: '$(TF_BACKEND_KEY)'
+        workingDirectory: '$(projectRoot)/terraform'
     - task: TerraformTaskV1@0
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
         command: 'apply'
         commandOptions: '-var-file=$(tfvars.secureFilePath)'
-        workingDirectory: './terraform'
+        workingDirectory: '$(projectRoot)/terraform'
       
 - stage: Build
   jobs:
