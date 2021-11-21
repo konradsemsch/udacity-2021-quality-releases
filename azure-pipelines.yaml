@@ -39,7 +39,7 @@ stages:
       inputs:
           terraformVersion: 1.0.11
     # Check Terraform version
-    - task: TerraformCLI@0
+    - task: TerraformCLI@1
       displayName: Verify Terraform version
       inputs:
         command: version
