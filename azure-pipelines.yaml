@@ -66,6 +66,10 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
+    - script: |
+        cd terraform
+        terraform destroy -auto-approve
+      displayName: Terraform destroy
     # - task: TerraformTaskV2@2
     #   displayName: Terraform init
     #   inputs:
