@@ -53,14 +53,17 @@ stages:
         backendAzureRmStorageAccountName: '$(TF_BACKEND_STORAGE_ACCOUNT)'
         backendAzureRmContainerName: '$(TF_BACKEND_CONTAINER)'
         backendAzureRmKey: '$(TF_BACKEND_KEY)'
-        commandOptions: '-var-file=$(tfvars.secureFilePath)'
+        # commandOptions: '-var-file=$(tfvars.secureFilePath)'
         workingDirectory: '$(projectRoot)/terraform'
     - task: TerraformTaskV1@0
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
         command: 'apply'
+        commandOptions: |
+          -auto-approve 
         commandOptions: '-var-file=$(tfvars.secureFilePath)'
+        environmentServiceNameAzureRM: 'quality-releases-service-connection'
         workingDirectory: '$(projectRoot)/terraform'
       
 - stage: Build
