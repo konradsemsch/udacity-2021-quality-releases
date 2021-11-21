@@ -58,6 +58,7 @@ stages:
           ls -la
           terraform init -backend-config="terraform.tfvars"
     - script: |
+        mkdir -p ~/.ssh/private
         cp $(udacity.secureFilePath) ~/.ssh/private/udacity.pub
       displayName: Add udacity.pub to .ssh
     - script: |
