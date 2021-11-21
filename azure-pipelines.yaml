@@ -48,11 +48,12 @@ stages:
       inputs:
         provider: 'azurerm'
         command: 'init'
-        # backendServiceArm: 'udacityproj-tfm'
-        # backendAzureRmResourceGroupName: 'ud-proj-state'
-        # backendAzureRmStorageAccountName: 'udprojtfstate'
+        # backendServiceArm: 'Terraform'
+        # backendAzureRmResourceGroupName: 'tfstate'
+        # backendAzureRmStorageAccountName: 'tfstate18342'
         # backendAzureRmContainerName: 'tfstate'
-        # backendAzureRmKey: 'key1'
+        # backendAzureRmKey: 'dev.terraform.tfstate'
+        commandOptions: '-var-file=$(tfvars.secureFilePath)'
         workingDirectory: './terraform'
     - task: TerraformTaskV1@0
       displayName: Terraform apply
@@ -60,6 +61,7 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         commandOptions: '-var-file=$(tfvars.secureFilePath)'
+        workingDirectory: './terraform'
       
 - stage: Build
   jobs:
