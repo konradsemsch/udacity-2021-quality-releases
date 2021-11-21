@@ -40,12 +40,14 @@ stages:
       inputs:
           terraformVersion: 1.0.11
     # Check Terraform version
-    - task: TerraformTaskV1@0
-      displayName: Verify Terraform version
-      inputs:
-        provider: 'azurerm'
-        command: 'version'
-        workingDirectory: 'terraform'
+    - bash: |
+        terraform --version
+    # - task: TerraformTaskV1@0
+    #   displayName: Verify Terraform version
+    #   inputs:
+    #     provider: 'azurerm'
+    #     command: 'version'
+    #     workingDirectory: 'terraform'
       
 - stage: Build
   jobs:
