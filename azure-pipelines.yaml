@@ -27,7 +27,7 @@ stages:
       name: udacity
       displayName: Download udacity public key
       inputs:
-        secureFile: 'udacity'
+        secureFile: 'udacity.pub'
     # Install Terraform
     - task: TerraformInstaller@0
       displayName: Install terraform
