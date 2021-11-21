@@ -43,7 +43,7 @@ stages:
       displayName: Download terraform.tfvars
       inputs:
         secureFile: 'terraform.tfvars'
-    - task: TerraformTaskV1@0
+    - task: TerraformTaskV2@2
       displayName: Terraform init
       inputs:
         provider: 'azurerm'
@@ -54,7 +54,7 @@ stages:
         backendAzureRmContainerName: '$(TF_BACKEND_CONTAINER)'
         backendAzureRmKey: '$(TF_BACKEND_KEY)'
         workingDirectory: '$(projectRoot)/terraform'
-    - task: TerraformTaskV1@0
+    - task: TerraformTaskV2@2
       displayName: Terraform apply
       inputs:
         provider: 'azurerm'
