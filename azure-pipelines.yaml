@@ -20,7 +20,8 @@ stages:
     # Get securely the ssh key
     - task: InstallSSHKey@0
       inputs:
-        knownHostsEntry: 'udacity ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHF0OdPtZvHRG/Qmae6aXhHQDklRXl6kXzq/I9n44utA'
+        knownHostsEntry: '$(KNOWN_HOST_STRING)'
+        sshPublicKey: '$(PUBLIC_KEY)'
         sshKeySecureFile: 'udacity'
     # Get securely terraform.tfvars file from Azure
     - task: DownloadSecureFile@1
@@ -39,7 +40,7 @@ stages:
       inputs:
           terraformVersion: 1.0.11
     # Check Terraform version
-    - task: TerraformCLI@1
+    - task: TerraformTaskV1@0
       displayName: Verify Terraform version
       inputs:
         command: version
