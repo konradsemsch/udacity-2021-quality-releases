@@ -61,10 +61,6 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
-    # - script: |
-    #     cd terraform
-    #     terraform destroy -auto-approve
-    #   displayName: Terraform destroy
 
 - stage: Build
   jobs:
@@ -93,6 +89,18 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip
       displayName: 'Upload Package'
       artifact: drop-selenium
+
+- stage: Destroy
+  jobs:
+  - job: Destroy
+    displayName: Destroy Infrastructure
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - script: |
+        cd terraform
+        terraform destroy -auto-approve
+      displayName: Terraform destroy
 
 - stage: Deploy
   jobs:
@@ -135,5 +143,3 @@ stages:
                 sudo apt-get install -y chromium-browser
                 pip3 install selenium
                 # export PATH=$PATH:some/path
-
-
