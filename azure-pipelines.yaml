@@ -10,6 +10,7 @@ variables:
   pythonVersion: '3.7.6'
   
 stages:
+
 - stage: Provision
   jobs:
   - job: Provision
@@ -69,7 +70,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      name: $(vmImageName)
+      vmImage: $(vmImageName)
     steps:
     - task: ArchiveFiles@2
       displayName: 'Archive FakeRestAPI'
