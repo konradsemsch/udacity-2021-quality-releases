@@ -61,6 +61,10 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
+    - script: |
+        cd terraform
+        terraform destroy -auto-approve
+      displayName: Terraform destroy
 
 - stage: Build
   jobs:
@@ -90,17 +94,17 @@ stages:
       displayName: 'Upload Package'
       artifact: drop-selenium
 
-- stage: Destroy
-  jobs:
-  - job: Destroy
-    displayName: Destroy Infrastructure
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - script: |
-        cd terraform
-        terraform destroy -auto-approve
-      displayName: Terraform destroy
+# - stage: Destroy
+#   jobs:
+#   - job: Destroy
+#     displayName: Destroy Infrastructure
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
+#     - script: |
+#         cd terraform
+#         terraform destroy -auto-approve
+#       displayName: Terraform destroy
 
 - stage: Deploy
   jobs:
