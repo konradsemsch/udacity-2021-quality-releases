@@ -64,7 +64,7 @@ stages:
     # - script: |
     #     cd terraform
     #     terraform destroy -auto-approve
-      displayName: Terraform destroy
+    #   displayName: Terraform destroy
 
 - stage: Build
   jobs:
