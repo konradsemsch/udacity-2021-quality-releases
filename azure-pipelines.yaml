@@ -61,9 +61,9 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
-    - script: |
-        cd terraform
-        terraform destroy -auto-approve
+    # - script: |
+    #     cd terraform
+    #     terraform destroy -auto-approve
       displayName: Terraform destroy
 
 - stage: Build
@@ -94,18 +94,6 @@ stages:
       displayName: 'Upload Package'
       artifact: drop-selenium
 
-# - stage: Destroy
-#   jobs:
-#   - job: Destroy
-#     displayName: Destroy Infrastructure
-#     pool:
-#       vmImage: $(vmImageName)
-#     steps:
-#     - script: |
-#         cd terraform
-#         terraform destroy -auto-approve
-#       displayName: Terraform destroy
-
 - stage: Deploy
   jobs:
   - deployment: FakeRestAPI
@@ -120,7 +108,7 @@ stages:
             displayName: 'Deploy Azure Web App'
             inputs:
               azureSubscription: 'quality-releases-service-connection'
-              appName: 'quality-release-app'
+              appName: 'quality-release-app-app-service'
               appType: webApp
               package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
   - deployment: VMDeploy
@@ -147,3 +135,15 @@ stages:
                 sudo apt-get install -y chromium-browser
                 pip3 install selenium
                 # export PATH=$PATH:some/path
+
+# - stage: Destroy
+#   jobs:
+#   - job: Destroy
+#     displayName: Destroy Infrastructure
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
+#     - script: |
+#         cd terraform
+#         terraform destroy -auto-approve
+#       displayName: Terraform destroy
