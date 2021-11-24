@@ -116,7 +116,7 @@ stages:
       vmImage: $(vmImageName)
     # displayName: NAME
     environment:
-      name:  'Test'
+      name:  'TEST'
       resourceType: VirtualMachine
       # tags: TAG NAME
     strategy:
