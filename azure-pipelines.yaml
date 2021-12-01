@@ -142,6 +142,8 @@ stages:
                 python3 --version
                 pip --version
 
+                pip install selenium
+
 # - stage: Destroy
 #   jobs:
 #   - job: Destroy
