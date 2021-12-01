@@ -135,8 +135,9 @@ stages:
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
+                curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py | python3
                 python3 --version
-                python3 -m pip --version
+                pip --version
                 # python3 -m pip3 install --upgrade pip3
                 # pip3 --version
                 # python3 -m pip install --upgrade pip
