@@ -139,7 +139,7 @@ stages:
                 # pip install --upgrade pip
                 # python3 -V
                 # pip -V
-                pip install selenium
+                pip3 install selenium
                 # export PATH=$PATH:some/path
 
                 # CHROME_DRIVER_VERSION=`curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE`
