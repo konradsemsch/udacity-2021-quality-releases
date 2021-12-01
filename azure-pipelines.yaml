@@ -135,8 +135,8 @@ stages:
                 sudo apt-get install python3-pip -y
                 sudo apt-get install unzip -y
                 sudo apt-get install -y chromium-browser
-                python3 -V
-                pip -V
+                python3 --version
+                pip3 --version
                 # python3 -m pip install --upgrade pip
                 # pip install --upgrade pip
                 # 
