@@ -144,6 +144,13 @@ stages:
 
                 pip install selenium
 
+                # Log Analytics installation (executed once on startup)
+                wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh
+                sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
+              env: 
+                AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
+                AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
+
 - stage: Test
   jobs:
   - job: Test
@@ -151,13 +158,13 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
-    - script: |
-        sudo npm install -g newman
-        sudo npm install -g newman-reporter-junitfull
-      displayName: 'Install Postman Dependencies'
-    - script:
-        newman run "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -e "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -r cli,junitfull --reporter-junitfull-export StarterAPIs.xml
-      displayName: 'Run Postman Data Validation Tests'
+    # - script: |
+    #     sudo npm install -g newman
+    #     sudo npm install -g newman-reporter-junitfull
+    #   displayName: 'Install Postman Dependencies'
+    # - script:
+    #     newman run "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -e "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -r cli,junitfull --reporter-junitfull-export StarterAPIs.xml
+    #   displayName: 'Run Postman Data Validation Tests'
 
 # - stage: Destroy
 #   jobs:
