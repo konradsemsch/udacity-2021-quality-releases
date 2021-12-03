@@ -123,33 +123,30 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: Bash@3
-            inputs:
-              targetType: 'inline'
-              script: |
-                #! /bin/bash
-                
-                sudo apt-add-repository universe -y
-                sudo apt-get update -y
-                sudo apt-get upgrade -y
-                sudo apt-get install python3-pip -y
-                sudo apt-get install unzip -y
-                sudo apt-get install -y chromium-browser
-                
-                curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
-                python3 get-pip.py --force-reinstall
-                
-                python3 --version
-                pip --version
+          - bash: |
+              #! /bin/bash
+              
+              sudo apt-add-repository universe -y
+              sudo apt-get update -y
+              sudo apt-get upgrade -y
+              sudo apt-get install python3-pip -y
+              sudo apt-get install unzip -y
+              sudo apt-get install -y chromium-browser
+              
+              curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
+              python3 get-pip.py --force-reinstall
+              
+              python3 --version
+              pip --version
 
-                pip install selenium
+              pip install selenium
 
-                # Log Analytics installation (executed once on startup)
-                wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh
-                sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
-              env: 
-                AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
-                AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
+              # Log Analytics installation (executed once on startup)
+              wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh
+              sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
+            env: 
+              AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
+              AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
 
 # - stage: Test
 #   jobs:
