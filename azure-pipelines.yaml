@@ -151,13 +151,13 @@ stages:
                 AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
                 AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
 
-- stage: Test
-  jobs:
-  - job: Test
-    displayName: Execute Tests
-    pool:
-      vmImage: $(vmImageName)
-    steps:
+# - stage: Test
+#   jobs:
+#   - job: Test
+#     displayName: Execute Tests
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
     # - script: |
     #     sudo npm install -g newman
     #     sudo npm install -g newman-reporter-junitfull
