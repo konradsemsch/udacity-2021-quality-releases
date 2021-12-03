@@ -144,6 +144,21 @@ stages:
 
                 pip install selenium
 
+- stage: Test
+  jobs:
+  - job: Test
+    displayName: Execute Tests
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - script: |
+        sudo npm install -g newman
+        sudo npm install -g newman-reporter-junitfull
+      displayName: 'Install Postman Dependencies'
+    - script:
+        newman run "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -e "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -r cli,junitfull --reporter-junitfull-export StarterAPIs.xml
+      displayName: 'Run Postman Data Validation Tests'
+
 # - stage: Destroy
 #   jobs:
 #   - job: Destroy
