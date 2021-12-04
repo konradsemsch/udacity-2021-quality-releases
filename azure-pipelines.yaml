@@ -187,7 +187,25 @@ stages:
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
               artifactName: 'drop-selenium-logs'
-
+  - deployment: tests_jmeter
+    displayName: JMeter tests
+    environment:
+      name: 'TEST'
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: JMeterInstaller@0
+            displayName: 'Install JMeter 5.2.1'
+            inputs:
+              jmeterVersion: '5.2.1'
+          - task: Bash@3
+            displayName: Run Jmeter tests
+            inputs:
+              targetType: 'inline'
+              script: |
+                jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir= automatedtesting/jmeter/pages.csv.
 
 
 # - stage: Destroy
