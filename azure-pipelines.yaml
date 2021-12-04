@@ -197,9 +197,8 @@ stages:
         deploy:
           steps:
           - bash: |
-              sudo apt-add-repository universe -y
+              sudo add-apt-repository ppa:openjdk-r/ppa
               sudo apt-get update -y
-              sudo apt-get upgrade -y
               sudo apt-get install openjdk-11-jre-headless -y
               java -version
               # wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
