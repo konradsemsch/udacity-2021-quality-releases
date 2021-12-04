@@ -150,6 +150,7 @@ stages:
 - stage: Test
   jobs:
   - job: Postman Tests
+    name: tests_postman
     displayName: Postman Tests
     pool:
       vmImage: $(vmImageName)
@@ -162,6 +163,7 @@ stages:
     #     newman run "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -e "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -r cli,junitfull --reporter-junitfull-export StarterAPIs.xml
     #   displayName: 'Run Postman Data Validation Tests'
   - deployment: Selenium tests
+    name: tests_selenium
     displayName: Selenium tests
     environment:
       name: 'TEST'
