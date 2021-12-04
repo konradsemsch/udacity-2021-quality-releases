@@ -196,6 +196,13 @@ stages:
       runOnce:
         deploy:
           steps:
+          - bash: |
+              sudo apt-get install openjdk-11-jre-headless -y
+              java -version
+              # wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
+              # tar xzvf jmeter.tgz
+              # mkdir -p log/jmeter
+            displayName: Install Java
           - task: JMeterInstaller@0
             displayName: 'Install JMeter 5.2.1'
             inputs:
