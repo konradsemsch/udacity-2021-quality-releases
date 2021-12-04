@@ -206,9 +206,9 @@ stages:
               # mkdir -p log/jmeter
             displayName: Install Java
           - task: JMeterInstaller@0
-            displayName: 'Install JMeter 5.2.1'
+            displayName: 'Install JMeter 5.4.1'
             inputs:
-              jmeterVersion: '5.2.1'
+              jmeterVersion: '5.4.1'
           - task: Bash@3
             displayName: Run Jmeter tests
             inputs:
