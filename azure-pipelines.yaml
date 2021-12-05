@@ -14,7 +14,8 @@ variables:
   PROJECT_ROOT: $(System.DefaultWorkingDirectory)
   AZURE_SERVICE_CONNECTION: 'quality-releases-service-connection'
 
-pool: $(VM_IMAGE)
+pool: 
+  vmImage: $(VM_IMAGE)
   
 stages:
 - stage: provision_infrastructure
