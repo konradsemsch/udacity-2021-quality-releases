@@ -13,6 +13,8 @@ variables:
   PYTHON_VERSION: '3.7.6' # not sure if needed at all
   PROJECT_ROOT: $(System.DefaultWorkingDirectory)
   AZURE_SERVICE_CONNECTION: 'quality-releases-service-connection'
+  ARTEFACT_API: 'build_fakerestapi'
+  ARTEFACT_SELENIUM: 'build_selenium'
 
 pool: 
   vmImage: $(VM_IMAGE)
@@ -71,30 +73,29 @@ stages:
   displayName: Build
   jobs:
   - job: Build
-    pool:
-      vmImage: $(vmImageName)
+    displayName: Build code
     steps:
     - task: ArchiveFiles@2
-      displayName: 'Archive FakeRestAPI'
+      displayName: Build FakeRestAPI
       inputs:
-        rootFolderOrFile: '$(projectRoot)/automatedtesting/jmeter/fakerestapi'
+        rootFolderOrFile: $(PROJECT_ROOT)/automatedtesting/jmeter/fakerestapi
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip'
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
-      displayName: 'Upload Package'
-      artifact: drop-fakerestapi
+      displayName: Upload FakeRestAPI archive
+      artifact: $(ARTEFACT_API)
     - task: ArchiveFiles@2
-      displayName: Archive Selenium
+      displayName: Build Selenium
       inputs:
-        rootFolderOrFile: '$(projectRoot)/automatedtesting/selenium'
+        rootFolderOrFile: $(PROJECT_ROOT)/automatedtesting/selenium
         includeRootFolder: false
         archiveType: 'zip'
-        archiveFile: '$(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip'
+        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip
         verbose: true
-    - publish: $(Build.ArtifactStagingDirectory)/selenium-$(Build.BuildId).zip
-      displayName: 'Upload Package'
-      artifact: drop-selenium
+    - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip
+      displayName: Upload Selenium archive
+      artifact: $(ARTEFACT_SELENIUM)
 
 - stage: deploy_code
   displayName: Deploy
