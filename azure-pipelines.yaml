@@ -1,72 +1,73 @@
+# Useful references:
+# 1) Predefined variables - https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#pipeline-variables-devops-services
+# 2) Tasks catalogue - https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/?view=azure-devops#utility
+# 3) YAML schema - https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#script
 
+name: Udacity Quality Releases Pipeline
 
 trigger:
 - master
 
-name: Azure Pipelines
 variables:
-  vmImageName: 'ubuntu-latest'
-  projectRoot: $(System.DefaultWorkingDirectory)
-  pythonVersion: '3.7.6'
+  VM_IMAGE: 'ubuntu-latest'
+  PYTHON_VERSION: '3.7.6' # not sure if needed at all
+  PROJECT_ROOT: $(System.DefaultWorkingDirectory)
+  AZURE_SERVICE_CONNECTION: 'quality-releases-service-connection'
+
+pool: $(VM_IMAGE)
   
 stages:
-
-- stage: Provision
+- stage: provision_infrastructure
+  displayName: Provision
   jobs:
-  - job: Provision
-    displayName: Provision Infrastructure
-    pool:
-      vmImage: $(vmImageName)
+  - job: terraform
+    displayName: Terraform provisioning
     steps:
     - task: DownloadSecureFile@1
-      name: udacity
-      displayName: Download udacity public key
+      displayName: Download udacity.pub key file
+      name: UDACITY_PUB_KEY
       inputs:
         secureFile: 'udacity.pub'
-    # Install Terraform
+    - task: DownloadSecureFile@1
+      displayName: Download terraform.tfvars file
+      name: TFVARS
+      inputs:
+        secureFile: 'terraform.tfvars'
     - task: TerraformInstaller@0
       displayName: Install terraform
       inputs:
           terraformVersion: 1.0.11
-    # Check Terraform version
-    - bash: |
-        terraform --version
-      displayName: Confirm Terraform version
-    - task: DownloadSecureFile@1
-      name: tfvars
-      displayName: Download terraform.tfvars
-      inputs:
-        secureFile: 'terraform.tfvars'
-    # Get securely terraform.tfvars file from Azure
     - script: |
-        cp $(tfvars.secureFilePath) $(projectRoot)/terraform
+        terraform --version
+      displayName: Check terraform version
+    - script: |
+        cp $(TFVARS.secureFilePath) $(PROJECT_ROOT)/terraform
         ls terraform -la
       displayName: Add terraform.tfvars to WD
     - task: AzureCLI@2
-      displayName: Azure CLI
+      displayName: Terraform init
       inputs:
-        azureSubscription: 'quality-releases-service-connection'
+        azureSubscription: $(AZURE_SERVICE_CONNECTION)
         scriptType: bash
         scriptLocation: inlineScript
         inlineScript: |
           cd terraform
           ls -la
           terraform init -backend-config="terraform.tfvars"
+    # NOTE: directory where the key is saved on the agent, must correspond
+    # to the location defined locally in vm.tf, in object admin_ssh_key
     - script: |
         mkdir -p ~/.ssh/private
-        cp $(udacity.secureFilePath) ~/.ssh/private/udacity.pub
+        cp $(UDACITY_PUB_KEY.secureFilePath) ~/.ssh/private/udacity.pub
         ls ~/.ssh/private -la
       displayName: Add udacity.pub to .ssh
     - script: |
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
-    # - script: |
-    #     cd terraform
-    #     terraform destroy -auto-approve
-    #   displayName: Terraform destroy
 
-- stage: Build
+- stage: build_code
+  displayName: Build
   jobs:
   - job: Build
     pool:
@@ -94,7 +95,8 @@ stages:
       displayName: 'Upload Package'
       artifact: drop-selenium
 
-- stage: Deploy
+- stage: deploy_code
+  displayName: Deploy
   jobs:
   - deployment: FakeRestAPI
     pool:
@@ -147,7 +149,8 @@ stages:
               AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
               AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
 
-- stage: Test
+- stage: test
+  displayName: Test
   jobs:
   - job: tests_postman
     displayName: Postman Tests
