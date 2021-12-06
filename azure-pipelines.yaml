@@ -13,8 +13,10 @@ variables:
   PYTHON_VERSION: '3.7.6' # not sure if needed at all
   PROJECT_ROOT: $(System.DefaultWorkingDirectory)
   AZURE_SERVICE_CONNECTION: 'quality-releases-service-connection'
-  ARTEFACT_API: 'build_fakerestapi'
-  ARTEFACT_SELENIUM: 'build_selenium'
+  BUILD_API: 'build_fakerestapi'
+  BUILD_SELENIUM: 'build_selenium'
+  ARTEFACT_SELENIUM: 'logs_selenium'
+  ARTEFACT_JMETER: 'logs_jmeter'
 
 pool: 
   vmImage: $(VM_IMAGE)
@@ -84,7 +86,7 @@ stages:
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
       displayName: Upload FakeRestAPI archive
-      artifact: $(ARTEFACT_API)
+      artifact: $(BUILD_API)
     - task: ArchiveFiles@2
       displayName: Build Selenium
       inputs:
@@ -95,41 +97,33 @@ stages:
         verbose: true
     - publish: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-selenium.zip
       displayName: Upload Selenium archive
-      artifact: $(ARTEFACT_SELENIUM)
+      artifact: $(BUILD_SELENIUM)
 
 - stage: deploy_code
   displayName: Deploy
   jobs:
-  - deployment: FakeRestAPI
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'TEST'
+  - deployment: deploy_fakerestapi
+    displayName: Deploy FakeRestApi
+    environment: Test
     strategy:
       runOnce:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Deploy Azure Web App'
+            displayName: Deploy Azure Web App
             inputs:
-              azureSubscription: 'quality-releases-service-connection'
+              azureSubscription: $(AZURE_SERVICE_CONNECTION)
               appName: 'quality-release-app-app-service'
               appType: webApp
-              package: $(Pipeline.Workspace)/drop-fakerestapi/$(Build.BuildId)-fakerestapi.zip
-  - deployment: VMDeploy
-    pool:
-      vmImage: $(vmImageName)
-    # displayName: NAME
-    environment:
-      name:  'TEST'
-      resourceType: VirtualMachine
-      # tags: TAG NAME
+              package: $(Agent.BuildDirectory)/$(BUILD_API)/$(Build.BuildId)-fakerestapi.zip
+  - deployment: deploy_vm
+    displayName: Deploy VM
+    environment: Test
     strategy:
       runOnce:
         deploy:
           steps:
-          - bash: |
-              #! /bin/bash
-              
+          - script: |              
               sudo apt-add-repository universe -y
               sudo apt-get update -y
               sudo apt-get upgrade -y
@@ -150,34 +144,31 @@ stages:
             env: 
               AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
               AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
+            displayName: Deploy Azure VM
 
 - stage: test
   displayName: Test
   jobs:
-  - job: tests_postman
-    displayName: Postman Tests
-    pool:
-      vmImage: $(vmImageName)
+  - job: test_postman
+    displayName: Run Postman tests
     steps:
     - script: |
         sudo npm install -g newman
         sudo npm install -g newman-reporter-junitfull
-      displayName: 'Install Postman Dependencies'
+      displayName: Install Postman cli
     # - script:
     #     newman run "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -e "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -r cli,junitfull --reporter-junitfull-export StarterAPIs.xml
     #   displayName: 'Run Postman Data Validation Tests'
-  - deployment: tests_selenium
-    displayName: Selenium tests
-    environment:
-      name: 'TEST'
-      resourceType: VirtualMachine
+  - deployment: test_selenium
+    displayName: Run Selenium tests
+    environment: Test
     strategy:
       runOnce:
         deploy:
           steps:
-          - bash: |
-              cd $(Pipeline.Workspace)/drop-selenium
-              unzip -o selenium-$(Build.BuildId).zip
+          - script: |
+              cd $(Agent.BuildDirectory)/$(BUILD_SELENIUM)
+              unzip -o $(Build.BuildId)-selenium.zip
               
               sudo mkdir -p /var/log/selenium
               sudo chmod 777 /var/log/selenium
@@ -188,20 +179,18 @@ stages:
               sudo cp /var/log/selenium/selenium-test.log log/selenium/selenium-test.log
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
-            displayName: Publish Selenium logs
+            displayName: Publish Selenium test logs
             inputs:
-              targetPath: '$(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log'
-              artifactName: 'drop-selenium-logs'
-  - deployment: tests_jmeter
-    displayName: JMeter tests
-    environment:
-      name: 'TEST'
-      resourceType: VirtualMachine
+              targetPath: $(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log
+              artifactName: $(ARTEFACT_SELENIUM)
+  - deployment: test_jmeter
+    displayName: Run JMeter tests
+    environment: Test
     strategy:
       runOnce:
         deploy:
           steps:
-          - bash: |
+          - script: |
               sudo add-apt-repository ppa:openjdk-r/ppa
               sudo apt-get update -y
               sudo apt-get install openjdk-11-jre-headless -y
@@ -209,18 +198,15 @@ stages:
               wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
               tar xzvf jmeter.tgz
               mkdir -p log/jmeter
-            displayName: Install Java
-          # - task: JMeterInstaller@0
-          #   displayName: 'Install JMeter 5.4.1'
-          #   inputs:
-          #     jmeterVersion: '5.4.1'
-          # - task: Bash@3
-          #   displayName: Run Jmeter tests
-          #   inputs:
-          #     targetType: 'inline'
-          #     script: |
-          #       jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir= automatedtesting/jmeter/pages.csv.
-
+            displayName: Install JMeter
+          - script: |
+              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv -l log/jmeter/jmeter-test-results.csv
+            displayName: Run JMeter tests
+          - task: PublishPipelineArtifact@1
+            displayName: Publish JMeter  test logs
+            inputs:
+              targetPath: $(System.DefaultWorkingDirectory)/log/jmeter/jmeter-test-results.csv
+              artifactName: $(ARTEFACT_JMETER)
 
 # - stage: Destroy
 #   jobs:
