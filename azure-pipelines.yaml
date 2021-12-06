@@ -200,11 +200,7 @@ stages:
               mkdir -p log/jmeter
             displayName: Install JMeter
           - script: |
-              ls -la
-              pwd
-              export PATH=$PATH:apache-jmeter-5.4.1/bin/jmeter
-              export PATH=$PATH:apache-jmeter-5.4.1/bin
-              jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv -l log/jmeter/jmeter-test-results.csv
+              apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv -l log/jmeter/jmeter-test-results.csv
             displayName: Run JMeter tests
           - task: PublishPipelineArtifact@1
             displayName: Publish JMeter  test logs
