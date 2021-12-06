@@ -197,12 +197,13 @@ stages:
               java -version
               wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
               tar xzvf jmeter.tgz
-              ls -la
-              pwd
-              export PATH=$PATH:apache-jmeter-5.4.1/bin/jmeter
               mkdir -p log/jmeter
             displayName: Install JMeter
           - script: |
+              ls -la
+              pwd
+              export PATH=$PATH:apache-jmeter-5.4.1/bin/jmeter
+              export PATH=$PATH:apache-jmeter-5.4.1/bin
               jmeter -n -t automatedtesting/jmeter/Starter.jmx -Jresdir=automatedtesting/jmeter/pages.csv -l log/jmeter/jmeter-test-results.csv
             displayName: Run JMeter tests
           - task: PublishPipelineArtifact@1
