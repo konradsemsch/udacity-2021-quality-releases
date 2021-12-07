@@ -80,7 +80,7 @@ stages:
     - task: ArchiveFiles@2
       displayName: Build FakeRestAPI
       inputs:
-        rootFolderOrFile: $(PROJECT_ROOT)/automatedtesting/jmeter/fakerestapi
+        rootFolderOrFile: $(PROJECT_ROOT)/fakerestapi
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId)-fakerestapi.zip
@@ -168,10 +168,7 @@ stages:
           steps:
           - script: |
               cd $(Agent.BuildDirectory)/$(BUILD_SELENIUM)
-              ls -la
               unzip -o $(Build.BuildId)-selenium.zip
-              ls -la
-              pip install selenium
               
               sudo mkdir -p /var/log/selenium
               sudo chmod 777 /var/log/selenium
@@ -186,35 +183,27 @@ stages:
             inputs:
               targetPath: $(System.DefaultWorkingDirectory)/log/selenium/selenium-test.log
               artifactName: $(ARTEFACT_SELENIUM)
-  - deployment: test_jmeter
+  - job: test_jmeter
     displayName: Run JMeter tests
-    environment: Test
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - script: |
-              sudo add-apt-repository ppa:openjdk-r/ppa
-              sudo apt-get update -y
-              sudo apt-get install openjdk-11-jre-headless -y
-              java -version
-              wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
-              tar xzvf jmeter.tgz
-              mkdir -p log/jmeter
-            displayName: Install JMeter
-          - script: |
-              cd $(Agent.BuildDirectory)/$(BUILD_API)
-              ls -la
-              unzip -o $(Build.BuildId)-fakerestapi.zip
-              ls -la
-              chmod +x Starter.jmx
-              apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx  -l log/jmeter/jmeter-test-results.csv
-            displayName: Run JMeter tests
-          - task: PublishPipelineArtifact@1
-            displayName: Publish JMeter  test logs
-            inputs:
-              targetPath: $(System.DefaultWorkingDirectory)/log/jmeter/jmeter-test-results.csv
-              artifactName: $(ARTEFACT_JMETER)
+    steps:
+    - script: |
+        sudo add-apt-repository ppa:openjdk-r/ppa
+        sudo apt-get update -y
+        sudo apt-get install openjdk-11-jre-headless -y
+        java -version
+        wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
+        tar xzvf jmeter.tgz
+        mkdir -p log/jmeter
+      displayName: Install JMeter
+    - script: |
+        ls -la
+        jmeter -n -t automatedtesting/jmeter/Starter.jmx -l log/jmeter/jmeter-test-results.csv
+      displayName: Run JMeter tests
+    - task: PublishPipelineArtifact@1
+      displayName: Publish JMeter  test logs
+      inputs:
+        targetPath: $(System.DefaultWorkingDirectory)/log/jmeter/jmeter-test-results.csv
+        artifactName: $(ARTEFACT_JMETER)
 
 # - stage: Destroy
 #   jobs:
