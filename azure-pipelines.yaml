@@ -200,6 +200,10 @@ stages:
               mkdir -p log/jmeter
             displayName: Install JMeter
           - script: |
+              ls -la
+              cd automatedtesting/jmeter
+              ls -la
+              chmod +x Starter.jmx
               apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx  -l log/jmeter/jmeter-test-results.csv
             displayName: Run JMeter tests
           - task: PublishPipelineArtifact@1
