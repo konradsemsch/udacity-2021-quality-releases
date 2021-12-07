@@ -168,7 +168,10 @@ stages:
           steps:
           - script: |
               cd $(Agent.BuildDirectory)/$(BUILD_SELENIUM)
+              ls -la
               unzip -o $(Build.BuildId)-selenium.zip
+              ls -la
+              pip install selenium
               
               sudo mkdir -p /var/log/selenium
               sudo chmod 777 /var/log/selenium
@@ -200,8 +203,9 @@ stages:
               mkdir -p log/jmeter
             displayName: Install JMeter
           - script: |
+              cd $(Agent.BuildDirectory)/$(BUILD_API)
               ls -la
-              cd automatedtesting/jmeter
+              unzip -o $(Build.BuildId)-fakerestapi.zip
               ls -la
               chmod +x Starter.jmx
               apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx  -l log/jmeter/jmeter-test-results.csv
