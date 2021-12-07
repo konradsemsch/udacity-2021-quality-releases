@@ -168,13 +168,13 @@ stages:
           steps:
           - task: DownloadBuildArtifacts@0
             inputs:
-              downloadType: 'single'
+              downloadType: single
               artifactName: $(BUILD_SELENIUM)
-              downloadPath: '$(System.ArtifactsDirectory)' 
+              downloadPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
           - script: |
               pwd
               ls -la
-              cd $(System.ArtifactsDirectory)
+              cd  $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
               ls -la
               cd $(Agent.BuildDirectory)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
@@ -210,7 +210,7 @@ stages:
     - task: PublishPipelineArtifact@1
       displayName: Publish JMeter  test logs
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/log/jmeter/jmeter-test-results.csv
+        targetPath: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/jmeter-test-results.csv
         artifactName: $(ARTEFACT_JMETER)
 
 # - stage: Destroy
