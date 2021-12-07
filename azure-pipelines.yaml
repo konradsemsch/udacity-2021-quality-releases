@@ -166,7 +166,16 @@ stages:
       runOnce:
         deploy:
           steps:
+          - task: DownloadBuildArtifacts@0
+            inputs:
+              downloadType: 'single'
+              artifactName: $(BUILD_SELENIUM)
+              downloadPath: '$(System.ArtifactsDirectory)' 
           - script: |
+              pwd
+              ls -la
+              cd $(System.ArtifactsDirectory)
+              ls -la
               cd $(Agent.BuildDirectory)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
               
@@ -191,14 +200,12 @@ stages:
         sudo add-apt-repository ppa:openjdk-r/ppa
         sudo apt-get update -y
         sudo apt-get install openjdk-11-jre-headless -y
-        java -version
         wget https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.4.tgz -O jmeter.tgz
         tar xzvf jmeter.tgz
-        mkdir -p log/jmeter
+        mkdir -p logs/tests/jmeter
       displayName: Install JMeter
     - script: |
-        ls -la
-        apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx -l log/jmeter/jmeter-test-results.csv
+        apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx -l logs/tests/jmeter/jmeter-test-results.csv
       displayName: Run JMeter tests
     - task: PublishPipelineArtifact@1
       displayName: Publish JMeter  test logs
