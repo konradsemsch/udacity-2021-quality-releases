@@ -163,6 +163,7 @@ stages:
             --reporters cli,junit \
             --reporter-junit-export log/tests/postman/RegressionTests.xml \
             --suppress-exit-code
+      continueOnError: true
       displayName: Run Postman regression tests
     - script:
         newman run automatedtesting/postman/StarterApi_ValidationTests.postman_collection.json \
@@ -170,6 +171,7 @@ stages:
             --reporters cli,junit \
             --reporter-junit-export log/tests/postman/ValidationTests.xml \
             --suppress-exit-code
+      continueOnError: true
       displayName: Run Postman validation tests
     - task: PublishTestResults@2
       displayName: Publish Postman test results
@@ -194,6 +196,9 @@ stages:
               pip install selenium
               python3 -u selenium_tests.py
               ls -la logs/tests/selenium
+              pwd
+              cd logs/tests/selenium
+              pwd
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
