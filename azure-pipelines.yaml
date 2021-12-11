@@ -172,11 +172,11 @@ stages:
               artifactName: $(BUILD_SELENIUM)
               downloadPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
           - script: |
-              pwd
-              ls -la
-              cd  $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
-              ls -la
-              cd $(Agent.BuildDirectory)/$(BUILD_SELENIUM)
+              # pwd
+              # ls -la
+              # cd  $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
+              # ls -la
+              cd $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
               
               pip install selenium
@@ -187,7 +187,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:
-              targetPath: $(System.DefaultWorkingDirectory)/logs/tests/selenium/selenium-test.log
+              targetPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-test.log
               artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
