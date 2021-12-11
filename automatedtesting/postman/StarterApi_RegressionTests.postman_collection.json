@@ -261,7 +261,7 @@
 							"    });",
 							"",
 							"    pm.test(\"Message is correct\", () => {",
-							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been deleted.\");",
+							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been deleted\");",
 							"    });",
 							"",
 							"};",
