@@ -192,13 +192,14 @@ stages:
               unzip -o $(Build.BuildId)-selenium.zip
               
               pip install selenium
-              python3 -u selenium_tests.py   
+              python3 -u selenium_tests.py
+              ls -la logs/tests/selenium
             displayName: Run Selenium tests
-          # - task: PublishPipelineArtifact@1
-          #   displayName: Publish Selenium test logs
-          #   inputs:
-          #     targetPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-test.log
-          #     artifactName: $(ARTEFACT_SELENIUM)
+          - task: PublishPipelineArtifact@1
+            displayName: Publish Selenium test logs
+            inputs:
+              targetPath: $(System.DefaultWorkingDirectory)/logs/tests/selenium/selenium-tests.log
+              artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
     steps:
