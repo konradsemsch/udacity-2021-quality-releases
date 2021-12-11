@@ -263,7 +263,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/update/{{create_id}}",
+					"raw": "http://dummy.restapiexample.com/api/v1/update/{{id}}",
 					"protocol": "http",
 					"host": [
 						"dummy",
