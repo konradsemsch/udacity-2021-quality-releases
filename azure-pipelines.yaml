@@ -177,6 +177,7 @@ stages:
               # cd  $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
               # ls -la
               cd $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
+              ls -la
               unzip -o $(Build.BuildId)-selenium.zip
               
               pip install selenium
