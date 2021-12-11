@@ -163,6 +163,8 @@ stages:
             --reporters cli,junit \
             --reporter-junit-export log/tests/postman/RegressionTests.xml \
             --suppress-exit-code
+        ls -la log/tests/postman
+        pwd
       continueOnError: true
       displayName: Run Postman regression tests
     - script:
@@ -171,6 +173,8 @@ stages:
             --reporters cli,junit \
             --reporter-junit-export log/tests/postman/ValidationTests.xml \
             --suppress-exit-code
+        ls -la log/tests/postman
+        pwd
       continueOnError: true
       displayName: Run Postman validation tests
     - task: PublishTestResults@2
