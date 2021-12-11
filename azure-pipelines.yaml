@@ -203,7 +203,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:
-              targetPath: $(System.DefaultWorkingDirectory)/logs/tests/selenium/selenium-tests.log
+              targetPath: $(Pipeline.Workspace)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-tests.log
               artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
