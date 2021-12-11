@@ -1,0 +1,318 @@
+{
+	"info": {
+		"_postman_id": "be2d42fe-79f5-49ff-9f70-fcf5a63db77d",
+		"name": "StarterApi_ValidationTests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Employees",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const jsonData = pm.response.json();",
+							"const schema = {",
+							"    \"status\": \"string\",",
+							"    \"data\": [",
+							"        {",
+							"            \"id\": \"number\",",
+							"            \"employee_name\": \"string\",",
+							"            \"employee_salary\": \"number\",",
+							"            \"employee_age\": \"number\",",
+							"            \"profile_image\": \"null\"            ",
+							"        }",
+							"    ],",
+							"    \"message\": \"string\"",
+							"}",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"pm.test(\"Number of records\", () => {",
+							"    pm.expect(jsonData.data.length).to.equal(24);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/employees",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const jsonData = pm.response.json();",
+							"const schema = {",
+							"    \"status\": \"string\",",
+							"    \"data\": [",
+							"        {",
+							"            \"name\": \"number\",",
+							"            \"salary\": \"string\",",
+							"            \"age\": \"number\",",
+							"            \"id\": \"number\"      ",
+							"        }",
+							"    ],",
+							"    \"message\": \"string\"",
+							"}",
+							"pm.environment.set(\"create_id\", jsonData.data.id);",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"pm.test(\"Validate new record values\", () => {",
+							"    pm.expect(jsonData.data.name).to.eql(pm.environment.get(\"create_name\"));",
+							"    pm.expect(jsonData.data.salary).to.eql(pm.environment.get(\"create_salary\"));",
+							"    pm.expect(jsonData.data.age).to.eql(pm.environment.get(\"create_age\"));",
+							"    pm.expect(jsonData.data.id).to.eql(pm.environment.get(\"create_id\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{create_name}}\",\n    \"salary\": \"{{create_salary}}\",\n    \"age\": \"{{create_age}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/create",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Single Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const jsonData = pm.response.json();",
+							"const schema = {",
+							"    \"status\": \"string\",",
+							"    \"data\": [",
+							"        {",
+							"            \"id\": \"number\",",
+							"            \"employee_name\": \"string\",",
+							"            \"employee_salary\": \"number\",",
+							"            \"employee_age\": \"number\",",
+							"            \"profile_image\": \"null\"        ",
+							"        }",
+							"    ],",
+							"    \"message\": \"string\"",
+							"}",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"pm.test(\"Validate employee id number \" + jsonData.data.id, () => {",
+							"    pm.expect(jsonData.data.id).to.eql(1);",
+							"    pm.expect(jsonData.data.employee_name).to.eql(\"Tiger Nixon\");",
+							"    pm.expect(jsonData.data.employee_salary).to.eql(320800);",
+							"    pm.expect(jsonData.data.employee_age).to.eql(61);",
+							"    pm.expect(jsonData.data.profile_image).to.eql(\"\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "file",
+					"file": {}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/employee/{{id}}",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"employee",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const jsonData = pm.response.json();",
+							"const schema = {",
+							"    \"status\": \"string\",",
+							"    \"data\": [",
+							"        {",
+							"            \"name\": \"string\",",
+							"            \"salary\": \"string\",",
+							"            \"age\": \"string\"     ",
+							"        }",
+							"    ],",
+							"    \"message\": \"string\"",
+							"}",
+							"",
+							"pm.environment.set(\"create_id\", jsonData.data.id);",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							"",
+							"pm.test(\"Validate employee id number \" + jsonData.data.id, () => {",
+							"    pm.expect(jsonData.data.name).to.eql(pm.environment.get(\"new_name\"));",
+							"    pm.expect(jsonData.data.salary).to.eql(pm.environment.get(\"new_salary\"));",
+							"    pm.expect(jsonData.data.age).to.eql(pm.environment.get(\"new_age\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{new_name}}\",\n    \"salary\": \"{{new_salary}}\",\n    \"age\": \"{{new_age}}\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/update/{{create_id}}",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"update",
+						"{{create_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"const jsonData = pm.response.json();",
+							"const schema = {",
+							"    \"status\": \"string\",",
+							"    \"data\": \"null\",",
+							"    \"message\": \"string\"",
+							"}",
+							"",
+							"pm.test(\"Validate schema\", () => {",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://dummy.restapiexample.com/api/v1/delete/{{create_id}}",
+					"protocol": "http",
+					"host": [
+						"dummy",
+						"restapiexample",
+						"com"
+					],
+					"path": [
+						"api",
+						"v1",
+						"delete",
+						"{{create_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

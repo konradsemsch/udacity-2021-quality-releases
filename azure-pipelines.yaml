@@ -155,10 +155,30 @@ stages:
     - script: |
         sudo npm install -g newman
         sudo npm install -g newman-reporter-junitfull
+        mkdir -p log/tests/postman
       displayName: Install Postman cli
-    # - script:
-    #     newman run "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -e "$(System.DefaultWorkingDirectory)/automatedtesting/postman/StarterAPIs.json" -r cli,junitfull --reporter-junitfull-export StarterAPIs.xml
-    #   displayName: 'Run Postman Data Validation Tests'
+    - script:
+        newman run automatedtesting/postman/StarterApi_RegressionTests.postman_collection.json \
+            -e automatedtesting/postman/Test.postman_environment.json \
+            --reporters cli,junit \
+            --reporter-junit-export log/tests/postman/RegressionTests.xml \
+            --suppress-exit-code
+      displayName: Run Postman regression tests
+    - script:
+        newman run automatedtesting/postman/StarterApi_ValidationTests.postman_collection.json \
+            -e automatedtesting/postman/Test.postman_environment.json \
+            --reporters cli,junit \
+            --reporter-junit-export log/tests/postman/ValidationTests.xml \
+            --suppress-exit-code
+      displayName: Run Postman validation tests
+    - task: PublishTestResults@2
+      displayName: Publish Postman test results
+      inputs:
+        testRunner: JUnit
+        searchFolder: $(System.DefaultWorkingDirectory)/log/tests/postman
+        testResultsFiles: '*.xml'
+        mergeTestResults: true
+        testRunTitle: Postman test results
   - deployment: test_selenium
     displayName: Run Selenium tests
     environment: Test
@@ -170,26 +190,21 @@ stages:
             inputs:
               downloadType: single
               artifactName: $(BUILD_SELENIUM)
-              downloadPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
+              downloadPath: $(System.DefaultWorkingDirectory)/$(BUILD_SELENIUM)
           - script: |
-              # pwd
-              # ls -la
-              # cd  $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
-              # ls -la
-              cd $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)
-              ls -la
-              unzip -o $(Build.BuildId)-selenium.zip
-              
-              pip install selenium
               sudo mkdir -p logs/tests/selenium
-              # sudo chmod 777 logs/tests/selenium
-              python3 -u selenium_tests.py 2>&1 | sudo tee -a logs/tests/selenium/selenium-test.log          
+              pwd
+              ls -la
+              cd $(System.DefaultWorkingDirectory)/$(BUILD_SELENIUM)
+              unzip -o $(Build.BuildId)-selenium.zip
+              pip install selenium
+              python3 -u selenium_tests.py   
             displayName: Run Selenium tests
-          - task: PublishPipelineArtifact@1
-            displayName: Publish Selenium test logs
-            inputs:
-              targetPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-test.log
-              artifactName: $(ARTEFACT_SELENIUM)
+          # - task: PublishPipelineArtifact@1
+          #   displayName: Publish Selenium test logs
+          #   inputs:
+          #     targetPath: $(System.ArtifactsDirectory)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-test.log
+          #     artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
     steps:
