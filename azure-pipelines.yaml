@@ -157,7 +157,7 @@ stages:
         sudo npm install -g newman-reporter-junitfull
         mkdir -p log/tests/postman
       displayName: Install Postman cli
-    - script:
+    - script: |
         newman run automatedtesting/postman/StarterApi_RegressionTests.postman_collection.json \
             -e automatedtesting/postman/Test.postman_environment.json \
             --reporters cli,junit \
@@ -167,7 +167,7 @@ stages:
         pwd
       continueOnError: true
       displayName: Run Postman regression tests
-    - script:
+    - script: |
         newman run automatedtesting/postman/StarterApi_ValidationTests.postman_collection.json \
             -e automatedtesting/postman/Test.postman_environment.json \
             --reporters cli,junit \
@@ -199,10 +199,6 @@ stages:
               
               pip install selenium
               python3 -u selenium_tests.py
-              ls -la logs/tests/selenium
-              pwd
-              cd logs/tests/selenium
-              pwd
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
@@ -222,6 +218,7 @@ stages:
       displayName: Install JMeter
     - script: |
         apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx -l logs/tests/jmeter/jmeter-test-results.csv
+        cat logs/tests/jmeter/jmeter-test-results.csv
       displayName: Run JMeter tests
     - task: PublishPipelineArtifact@1
       displayName: Publish JMeter  test logs
