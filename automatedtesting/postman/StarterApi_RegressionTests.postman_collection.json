@@ -13,18 +13,24 @@
 					"script": {
 						"exec": [
 							"",
-							"const jsonData = pm.response.json();",
 							"pm.test(\"Reponse equals 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Status is correct\", () => {",
-							"    pm.expect(jsonData.status).to.eql(\"success\");",
-							"});",
+							"if (pm.response.code === 200) {",
+							"    ",
+							"\tconst jsonData = pm.response.json();",
 							"",
-							"pm.test(\"Message is correct\", () => {",
-							"    pm.expect(jsonData.message).to.eql(\"Successfully! All records has been fetched.\");",
-							"});"
+							"\tpm.test(\"Status is correct\", () => {",
+							"        pm.expect(jsonData.status).to.eql(\"success\");",
+							"    });",
+							"",
+							"    pm.test(\"Message is correct\", () => {",
+							"        pm.expect(jsonData.message).to.eql(\"Successfully! All records has been fetched.\");",
+							"    });",
+							"",
+							"};",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -58,20 +64,25 @@
 					"script": {
 						"exec": [
 							"",
-							"const jsonData = pm.response.json();",
 							"pm.test(\"Reponse equals 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Status is correct\", () => {",
-							"    pm.expect(jsonData.status).to.eql(\"success\");",
-							"});",
+							"if (pm.response.code === 200) {",
 							"",
-							"pm.test(\"Message is correct\", () => {",
-							"    pm.expect(jsonData.message).to.eql(\"Successfully! Record has been added.\");",
-							"});",
+							"    const jsonData = pm.response.json();",
 							"",
-							"pm.environment.set(\"create_id\", jsonData.data.id);"
+							"    pm.test(\"Status is correct\", () => {",
+							"        pm.expect(jsonData.status).to.eql(\"success\");",
+							"    });",
+							"",
+							"    pm.test(\"Message is correct\", () => {",
+							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been added.\");",
+							"    });",
+							"",
+							"    pm.environment.set(\"create_id\", jsonData.data.id);",
+							"",
+							"};"
 						],
 						"type": "text/javascript"
 					}
@@ -113,19 +124,25 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"const jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Reponse equals 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Status is correct\", function () {",
-							"    pm.expect(jsonData.status).to.eql(\"success\");",
-							"});",
+							"if (pm.response.code === 200) {",
 							"",
-							"pm.test(\"Message is correct\", function () {",
-							"    pm.expect(jsonData.message).to.eql(\"Successfully! Record has been fetched.\");",
-							"});"
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.test(\"Status is correct\", function () {",
+							"        pm.expect(jsonData.status).to.eql(\"success\");",
+							"    });",
+							"",
+							"    pm.test(\"Message is correct\", function () {",
+							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been fetched.\");",
+							"    });",
+							"",
+							"};",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -167,20 +184,27 @@
 					"script": {
 						"exec": [
 							"",
-							"const jsonData = pm.response.json();",
 							"pm.test(\"Reponse equals 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Status is correct\", () => {",
-							"    pm.expect(jsonData.status).to.eql(\"success\");",
-							"});",
+							"if (pm.response.code === 200) {",
 							"",
-							"pm.test(\"Message is correct\", () => {",
-							"    pm.expect(jsonData.message).to.eql(\"Successfully! Record has been updated.\");",
-							"});",
+							"    const jsonData = pm.response.json();",
 							"",
-							"pm.environment.set(\"create_id\", jsonData.data.id);"
+							"    pm.test(\"Status is correct\", () => {",
+							"        pm.expect(jsonData.status).to.eql(\"success\");",
+							"    });",
+							"",
+							"    pm.test(\"Message is correct\", () => {",
+							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been updated.\");",
+							"    });",
+							"",
+							"    pm.environment.set(\"create_id\", jsonData.data.id);",
+							"",
+							"};",
+							"",
+							""
 						],
 						"type": "text/javascript"
 					}
@@ -224,18 +248,25 @@
 					"script": {
 						"exec": [
 							"",
-							"const jsonData = pm.response.json();",
 							"pm.test(\"Reponse equals 200\", () => {",
 							"    pm.response.to.have.status(200);",
 							"});",
 							"",
-							"pm.test(\"Status is correct\", () => {",
-							"    pm.expect(jsonData.status).to.eql(\"success\");",
-							"});",
+							"if (pm.response.code === 200) {",
 							"",
-							"pm.test(\"Message is correct\", () => {",
-							"    pm.expect(jsonData.message).to.eql(\"Successfully! Record has been deleted.\");",
-							"});"
+							"    const jsonData = pm.response.json();",
+							"",
+							"    pm.test(\"Status is correct\", () => {",
+							"        pm.expect(jsonData.status).to.eql(\"success\");",
+							"    });",
+							"",
+							"    pm.test(\"Message is correct\", () => {",
+							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been deleted.\");",
+							"    });",
+							"",
+							"};",
+							"",
+							""
 						],
 						"type": "text/javascript"
 					}

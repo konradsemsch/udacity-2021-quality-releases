@@ -186,17 +186,11 @@ stages:
       runOnce:
         deploy:
           steps:
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              downloadType: single
-              artifactName: $(BUILD_SELENIUM)
-              downloadPath: $(System.DefaultWorkingDirectory)/$(BUILD_SELENIUM)
           - script: |
               sudo mkdir -p logs/tests/selenium
-              pwd
-              ls -la
-              cd $(System.DefaultWorkingDirectory)/$(BUILD_SELENIUM)
+              cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
+              
               pip install selenium
               python3 -u selenium_tests.py   
             displayName: Run Selenium tests
