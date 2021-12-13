@@ -195,6 +195,7 @@ stages:
               
               pip install selenium
               python3 -u selenium_tests.py
+              sudo chmod 775 $(Pipeline.Workspace)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-tests.log
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
@@ -239,8 +240,8 @@ stages:
       inputs:
         rootFolderOrFile: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/stress-test-html-report
         includeRootFolder: false
-        archiveType: 'zip'
-        archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report-$(Build.BuildId).zip'
+        archiveType: zip
+        archiveFile: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/stress-test-html-report-$(Build.BuildId).zip
         verbose: true      
     - task: PublishPipelineArtifact@1
       displayName: Publish JMeter  test logs
