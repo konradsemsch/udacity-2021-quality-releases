@@ -213,13 +213,39 @@ stages:
         mkdir -p logs/tests/jmeter
       displayName: Install JMeter
     - script: |
-        apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/Starter.jmx -l logs/tests/jmeter/jmeter-test-results.csv
-        cat logs/tests/jmeter/jmeter-test-results.csv
-      displayName: Run JMeter tests
+        apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/EnduranceTest.jmx \
+          -l logs/tests/jmeter/jmeter-endurance-test-results.csv \
+          -e -f -o logs/tests/jmeter/endurance-test-html-report
+        ls -la logs/tests/jmeter
+        cat logs/tests/jmeter/jmeter-endurance-test-results.csv
+      displayName: Run JMeter Endurance tests
+    - script: |
+        apache-jmeter-5.4/bin/jmeter -n -t automatedtesting/jmeter/StressTest.jmx \
+          -l logs/tests/jmeter/jmeter-stress-test-results.csv \
+          -e -f -o logs/tests/jmeter/stress-test-html-report
+        ls -la logs/tests/jmeter
+        cat logs/tests/jmeter/jmeter-stress-test-results.csv
+      displayName: Run JMeter Stress tests
+    - task: ArchiveFiles@2
+      displayName: JMeter Endurance Report to Artifact
+      inputs:
+        rootFolderOrFile: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/endurance-test-html-report
+        includeRootFolder: false
+        archiveType: zip
+        archiveFile: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/endurance-test-html-report-$(Build.BuildId).zip
+        verbose: true
+    - task: ArchiveFiles@2
+      displayName: JMeter Stress Report to Artifact
+      inputs:
+        rootFolderOrFile: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/stress-test-html-report
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(System.DefaultWorkingDirectory)/log/jmeter/stress-test-html-report-$(Build.BuildId).zip'
+        verbose: true      
     - task: PublishPipelineArtifact@1
       displayName: Publish JMeter  test logs
       inputs:
-        targetPath: $(System.DefaultWorkingDirectory)/logs/tests/jmeter/jmeter-test-results.csv
+        targetPath: $(System.DefaultWorkingDirectory)/logs/tests/jmeter
         artifactName: $(ARTEFACT_JMETER)
 
 # - stage: Destroy
