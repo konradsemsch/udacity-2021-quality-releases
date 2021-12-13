@@ -3,7 +3,7 @@
 # 2) Tasks catalogue - https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/?view=azure-devops#utility
 # 3) YAML schema - https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema?view=azure-devops&tabs=schema%2Cparameter-schema#script
 
-name: Udacity Quality Releases Pipeline
+name: Udacity Quality Releases Pipeline -  $(Date:yyyyMMdd)
 
 trigger:
 - master
