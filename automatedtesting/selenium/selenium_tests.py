@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def setup_logging(
     log_output_filename: str = "selenium-tests",
-    path_log_output: str = "/var/log/selenium",
+    path_log_output: str = "logs/tests/selenium",
     level=logging.INFO,
 ) -> None:
     Path(path_log_output).mkdir(parents=True, exist_ok=True)
@@ -80,7 +80,7 @@ if __name__ == "__main__":
     login(driver=driver, user="standard_user", password="secret_sauce")
     logger.info("---- Add to Cart Test -----")
     n_items_added = add_to_cart(driver, 6)
-    logger.info("---- Remove from Cart Test -----")
+    logger.info("---- Remove from Test -----")
     n_items_removed = remove_from_cart(driver, n_items_added)
     assert n_items_added == n_items_removed
 

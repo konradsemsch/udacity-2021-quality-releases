@@ -189,6 +189,7 @@ stages:
         deploy:
           steps:
           - script: |
+              sudo mkdir -p logs/tests/selenium
               sudo mkdir -p /var/log/selenium
               sudo chmod 777 /var/log/selenium
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
@@ -196,6 +197,8 @@ stages:
               
               pip install selenium
               python3 -u selenium_tests.py
+              ls -la
+              sudo cp logs/tests/selenium/selenium-tests.log /var/log/selenium/selenium-test.log
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
