@@ -198,7 +198,10 @@ stages:
               pip install selenium
               python3 -u selenium_tests.py
               ls -la
-              sudo cp logs/tests/selenium/selenium-tests.log /var/log/selenium/selenium-test.log
+              sudo cp logs/tests/selenium/selenium-tests.log /var/log/selenium/selenium-tests.log
+              pwd
+              ls -la /var/log
+              ls -la /var/log/selenium
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
