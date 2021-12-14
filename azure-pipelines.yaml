@@ -254,15 +254,3 @@ stages:
       inputs:
         targetPath: $(System.DefaultWorkingDirectory)/logs/tests/jmeter
         artifactName: $(ARTEFACT_JMETER)
-
-# - stage: Destroy
-#   jobs:
-#   - job: Destroy
-#     displayName: Destroy Infrastructure
-#     pool:
-#       vmImage: $(vmImageName)
-#     steps:
-#     - script: |
-#         cd terraform
-#         terraform destroy -auto-approve
-#       displayName: Terraform destroy
