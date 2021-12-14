@@ -190,7 +190,7 @@ stages:
           steps:
           - script: |
               sudo mkdir -p /var/log/selenium
-              sudo chmod 775 /var/log/selenium
+              sudo chmod 777 /var/log/selenium
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
               
