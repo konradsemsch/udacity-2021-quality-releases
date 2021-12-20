@@ -193,24 +193,19 @@ stages:
         deploy:
           steps:
           - script: |
-              sudo mkdir -p logs/tests/selenium
-              sudo mkdir -p /var/log/selenium
-              sudo chmod 777 /var/log/selenium
+              sudo mkdir -p /logs/tests/selenium
+              sudo chmod 777 /logs/tests/selenium
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
               
               pip install selenium
               python3 -u selenium_tests.py
-              ls -la
-              sudo cp logs/tests/selenium/selenium-tests.log /var/log/selenium/selenium-tests.log
-              pwd
-              ls -la /var/log
-              ls -la /var/log/selenium
+              ls -la /logs/tests/selenium
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:
-              targetPath: $(Pipeline.Workspace)/$(BUILD_SELENIUM)/logs/tests/selenium/selenium-tests.log
+              targetPath: /logs/tests/selenium/selenium-tests.log
               artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
