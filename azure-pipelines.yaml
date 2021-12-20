@@ -201,6 +201,8 @@ stages:
               pip install selenium
               python3 -u selenium_tests.py
               ls -la /logs/tests/selenium
+              cd /logs/tests/selenium
+              pwd
             displayName: Run Selenium tests
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
