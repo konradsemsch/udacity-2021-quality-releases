@@ -144,7 +144,7 @@ stages:
               pip install selenium
 
               # Log Analytics installation (executed once on startup)
-              wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
+              # wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
             env: 
               AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
               AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
@@ -198,8 +198,8 @@ stages:
               ls -la
               pwd
               
-              sudo mkdir -p /logs/tests/selenium
-              sudo chmod 777 /logs/tests/selenium
+              sudo mkdir -p /home/konradino/logs/tests/selenium
+              sudo chmod 777 /home/konradino/logs/tests/selenium
               pip install selenium
 
               python3 -u selenium_tests.py
@@ -208,7 +208,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:
-              targetPath: /logs/tests/selenium/selenium-tests.log
+              targetPath: /home/konradino/logs/tests/selenium/selenium-tests.log
               artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
