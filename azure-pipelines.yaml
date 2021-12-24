@@ -70,10 +70,10 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
-    - script: |
-        cd terraform
-        terraform destroy -auto-approve
-      displayName: Terraform destroy
+    # - script: |
+    #     cd terraform
+    #     terraform destroy -auto-approve
+    #   displayName: Terraform destroy
 
 - stage: build_code
   displayName: Build
