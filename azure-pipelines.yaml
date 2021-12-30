@@ -213,7 +213,7 @@ stages:
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:
-              targetPath: /home/konradino/logs/tests/selenium/selenium-tests.log
+              targetPath: /home/konradino/selenium/selenium-tests.txt
               artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
