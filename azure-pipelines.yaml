@@ -207,13 +207,13 @@ stages:
               ls -la /var/log
               ls -la /var/log/selenium
 
-              sudo cp /var/log/selenium/selenium-tests.txt /home/konradino/selenium/selenium-tests.txt
+              sudo cp /var/log/selenium/selenium-tests.txt /home/konradino/selenium-tests.txt
             displayName: Run Selenium tests
             
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:
-              targetPath: /home/konradino/selenium/selenium-tests.txt
+              targetPath: /home/konradino/selenium-tests.txt
               artifactName: $(ARTEFACT_SELENIUM)
   - job: test_jmeter
     displayName: Run JMeter tests
