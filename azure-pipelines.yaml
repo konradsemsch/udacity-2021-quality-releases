@@ -198,14 +198,16 @@ stages:
               ls -la
               pwd
               
-              sudo mkdir -p /home/konradino/logs/tests/selenium
-              sudo chmod 777 /home/konradino/logs/tests/selenium
+              sudo mkdir -p /var/log/selenium
+              sudo chmod 777 /var/log/selenium
               pip install selenium
 
-              python3 -u selenium_tests.py > /home/konradino/logs/tests/selenium/selenium-tests.txt
+              python3 -u selenium_tests.py > /var/log/selenium/selenium-tests.txt
 
-              ls -la /home/konradino
-              ls -la /home/konradino/logs/tests/selenium
+              ls -la /var/log
+              ls -la /var/log/selenium
+
+              sudo cp /var/log/selenium/selenium-tests.txt /home/konradino/selenium/selenium-tests.txt
             displayName: Run Selenium tests
             
           - task: PublishPipelineArtifact@1
