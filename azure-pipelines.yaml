@@ -202,7 +202,7 @@ stages:
               sudo chmod 777 /home/konradino/logs/tests/selenium
               pip install selenium
 
-              python3 -u selenium_tests.py
+              python3 -u selenium_tests.py > /home/konradino/logs/tests/selenium/selenium-tests.txt
 
               ls -la /home/konradino
               ls -la /home/konradino/logs/tests/selenium
