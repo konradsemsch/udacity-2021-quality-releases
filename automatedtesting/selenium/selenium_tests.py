@@ -7,14 +7,11 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
-logger = logging.getLogger(__name__)
-
 def setup_logging(
     log_output_filename: str = "selenium-tests",
     path_log_output: str = "/home/konradino/logs/tests/selenium",
-    level=logging.INFO,
+    level = logging.INFO,
 ) -> None:
-    Path(path_log_output).mkdir(parents=True, exist_ok=True)
 
     logging.basicConfig(
         level=level,
@@ -67,6 +64,7 @@ def remove_from_cart(driver, n):
     return counter
 
 if __name__ == "__main__":
+    logger = logging.getLogger(__name__)
     setup_logging()
 
     logger.info("Starting the browser...")
