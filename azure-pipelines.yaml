@@ -122,7 +122,9 @@ stages:
               package: $(Agent.BuildDirectory)/$(BUILD_API)/$(Build.BuildId)-fakerestapi.zip
   - deployment: deploy_vm
     displayName: Deploy VM
-    environment: Test
+    environment:
+      name: Test
+      resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
@@ -195,6 +197,7 @@ stages:
         deploy:
           steps:
           - script: |
+              python3 --version
               sudo apt-get install zip unzip
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
