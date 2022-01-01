@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def setup_logging(
     log_output_filename: str = "selenium-tests",
-    path_log_output: str = "/var/log/selenium",
+    path_log_output: str = "/home/konradino/logs/tests/selenium",
     level=logging.INFO,
 ) -> None:
     Path(path_log_output).mkdir(parents=True, exist_ok=True)
