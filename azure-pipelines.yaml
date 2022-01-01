@@ -135,7 +135,7 @@ stages:
               sudo apt-get install unzip -y
               sudo apt-get install -y chromium-browser
               
-              curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
+              curl https://bootstrap.pypa.io/pip/3.6/get-pip.py -o get-pip.py
               python3 get-pip.py --force-reinstall
               
               python3 --version
