@@ -139,6 +139,8 @@ stages:
               
               curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
               python3 get-pip.py --force-reinstall
+
+              sudo apt-get upgrade python3.6
               
               python3 --version
               pip --version
