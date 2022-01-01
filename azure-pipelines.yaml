@@ -187,7 +187,9 @@ stages:
         testRunTitle: Postman test results
   - deployment: test_selenium
     displayName: Run Selenium tests
-    environment: Test
+    environment: 
+      name: Test
+      resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
