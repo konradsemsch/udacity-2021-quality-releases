@@ -195,6 +195,7 @@ stages:
         deploy:
           steps:
           - script: |
+              sudo apt-get install zip unzip
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
               ls -la
               unzip -o $(Build.BuildId)-selenium.zip
