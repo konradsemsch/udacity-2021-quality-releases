@@ -108,9 +108,7 @@ stages:
   jobs:
   - deployment: deploy_fakerestapi
     displayName: Deploy FakeRestApi
-    environment: 
-      name: Test
-      resourceType: VirtualMachine
+    environment: Test
     strategy:
       runOnce:
         deploy:
@@ -124,9 +122,7 @@ stages:
               package: $(Agent.BuildDirectory)/$(BUILD_API)/$(Build.BuildId)-fakerestapi.zip
   - deployment: deploy_vm
     displayName: Deploy VM
-    environment: 
-      name: Test
-      resourceType: VirtualMachine
+    environment: Test
     strategy:
       runOnce:
         deploy:
@@ -200,13 +196,13 @@ stages:
           steps:
           - script: |
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
+              ls -la
               unzip -o $(Build.BuildId)-selenium.zip
               ls -la
               pwd
               
               sudo mkdir -p /var/log/selenium
               sudo chmod 777 /var/log/selenium
-              pip install selenium
 
               python3 -u selenium_tests.py > /var/log/selenium/selenium-tests.txt
 
