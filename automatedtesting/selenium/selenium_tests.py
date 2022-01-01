@@ -8,22 +8,22 @@ from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
 
 def setup_logging(
-    log_output_filename: str = "selenium-tests",
-    path_log_output: str = "/home/konradino/logs/tests/selenium",
+    # log_output_filename: str = "selenium-tests",
+    # path_log_output: str = "/home/konradino/logs/tests/selenium",
     level = logging.INFO,
 ) -> None:
 
     logging.basicConfig(
         level=level,
         format="%(asctime)s | %(levelname)s | %(filename)s | %(funcName)s | %(message)s",
-        handlers=[
-            logging.FileHandler(
-                os.path.join(
-                    path_log_output, f"{log_output_filename}.log"
-                )
-            ),
-            logging.StreamHandler(),
-        ],
+        # handlers=[
+        #     logging.FileHandler(
+        #         os.path.join(
+        #             path_log_output, f"{log_output_filename}.log"
+        #         )
+        #     ),
+        #     logging.StreamHandler(),
+        # ],
     )
 
 def login(driver, user, password):

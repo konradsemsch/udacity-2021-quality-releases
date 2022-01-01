@@ -204,7 +204,7 @@ stages:
               sudo mkdir -p /home/konradino/logs/tests/selenium
               sudo chmod 777 /home/konradino/logs/tests/selenium
 
-              python3 -u selenium_tests.py
+              python3 -u selenium_tests.py > /home/konradino/logs/tests/selenium/selenium-tests.log
 
               ls -la /home/konradino/logs/tests/selenium
 
