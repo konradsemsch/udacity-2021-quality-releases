@@ -131,6 +131,7 @@ stages:
           steps:
           - script: |              
               sudo apt-add-repository universe -y
+              sudo add-apt-repository ppa:deadsnakes/ppa
               sudo apt-get update -y
               sudo apt-get upgrade -y
               sudo apt-get install python3.6
