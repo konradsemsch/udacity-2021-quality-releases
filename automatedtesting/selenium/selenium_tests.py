@@ -33,7 +33,7 @@ def login(driver, user, password):
     driver.find_element(By.CSS_SELECTOR, "input[id='password']").send_keys(password)
     driver.find_element(By.ID, "login-button").click()
     assert "https://www.saucedemo.com/inventory.html" in driver.current_url
-    logger.info(f"Successfully logged into the website with user: {user} and password: {password}")
+    logger.info("Successfully logged into the website with user: {} and password: {}".format(user, password))
 
 def add_to_cart(driver, n):
     """Add items to cart sequentially using the item number."""
@@ -43,7 +43,7 @@ def add_to_cart(driver, n):
         driver.find_element(By.CSS_SELECTOR, element).click()
         driver.find_element(By.CSS_SELECTOR, "button.btn_primary.btn_inventory").click()
         product = driver.find_element(By.CSS_SELECTOR, "div[class='inventory_details_name large_size']").text
-        logger.info(f"Added {product} to cart")
+        logger.info("Added {} to cart".format(product))
         driver.find_element(By.CSS_SELECTOR, "button.inventory_details_back_button").click()
         counter += 1
     assert counter == n
@@ -57,7 +57,7 @@ def remove_from_cart(driver, n):
         driver.find_element(By.CSS_SELECTOR, element).click()
         driver.find_element(By.CSS_SELECTOR, "button.btn_secondary.btn_inventory").click()
         product = driver.find_element(By.CSS_SELECTOR, "div[class='inventory_details_name large_size']").text
-        logger.info(f"Removed {product} from cart")
+        logger.info("Removed {} from cart".format(product))
         driver.find_element(By.CSS_SELECTOR, "button.inventory_details_back_button").click()
         counter += 1
     assert counter == n
