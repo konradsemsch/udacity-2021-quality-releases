@@ -131,23 +131,24 @@ stages:
           steps:
           - script: |              
               sudo apt-add-repository universe -y
-              sudo add-apt-repository ppa:deadsnakes/ppa
+              # sudo add-apt-repository ppa:deadsnakes/ppa
               sudo apt-get update -y
               sudo apt-get upgrade -y
-              sudo apt-get install python3.6
-              # sudo apt-get install python3-pip -y
+              # sudo apt-get install python3.6
+              sudo apt-get install python3-pip -y
               sudo apt-get install unzip -y
               sudo apt-get install -y chromium-browser
+              sudo apt-get install -y chromium-chromedriver
               
-              curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.6
-              # curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
-              # python3 get-pip.py --force-reinstall
+              # curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.6
+              curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
+              python3 get-pip.py --force-reinstall
               
               python3 --version
               pip --version
 
               pip install selenium
-              pip install webdriver-manager
+              # pip install webdriver-manager
 
               # Log Analytics installation (executed once on startup)
               # wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com

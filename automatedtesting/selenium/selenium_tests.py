@@ -6,7 +6,7 @@ from pathlib import Path
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver_manager.chrome import ChromeDriverManager
 
 def setup_logging(
     log_output_filename: str = "selenium-tests",
@@ -71,7 +71,7 @@ if __name__ == "__main__":
     logger.info("Starting the browser...")
     options = ChromeOptions()
     options.add_argument("--headless") 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+    driver = webdriver.Chrome(options=options) # ChromeDriverManager().install(), 
     logger.info("Browser started successfully. Navigating to the demo page to login.")
 
     # Starting test-suite functions
