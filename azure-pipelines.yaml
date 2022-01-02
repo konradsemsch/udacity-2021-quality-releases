@@ -70,10 +70,13 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
-    - script: |
-        cd terraform
-        terraform destroy -auto-approve
-      displayName: Terraform destroy
+    - task: Delay@1
+      inputs:
+        delayForMinutes: 10
+    # - script: |
+    #     cd terraform
+    #     terraform destroy -auto-approve
+    #   displayName: Terraform destroy
 
 - stage: build_code
   displayName: Build
