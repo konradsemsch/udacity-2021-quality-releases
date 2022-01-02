@@ -4,7 +4,7 @@
     "parameters": {
         "workspaceName": {
             "type": "String",
-            "defaultValue": "quality-releases",
+            "defaultValue": "quality-releases-logs",
             "metadata": {
               "description": "Specifies the name of the workspace."
             }
