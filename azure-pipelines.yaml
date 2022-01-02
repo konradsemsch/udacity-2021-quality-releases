@@ -130,17 +130,14 @@ stages:
         deploy:
           steps:
           - script: |              
-              sudo apt-add-repository universe -y
-              # sudo add-apt-repository ppa:deadsnakes/ppa
+              sudo apt-add-repository -y universe
               sudo apt-get update -y
               sudo apt-get upgrade -y
-              # sudo apt-get install python3.6
-              sudo apt-get install python3-pip -y
-              sudo apt-get install unzip -y
+              sudo apt-get install -y python3-pip
+              sudo apt-get install -y zip unzip
               sudo apt-get install -y chromium-browser
               sudo apt-get install -y chromium-chromedriver
               
-              # curl https://bootstrap.pypa.io/get-pip.py | sudo -H python3.6
               curl https://bootstrap.pypa.io/pip/3.5/get-pip.py -o get-pip.py
               python3 get-pip.py --force-reinstall
               
@@ -148,10 +145,9 @@ stages:
               pip --version
 
               pip install selenium
-              # pip install webdriver-manager
 
               # Log Analytics installation (executed once on startup)
-              # wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
+              wget https://raw.githubusercontent.com/Microsoft/OMS-Agent-for-Linux/master/installer/scripts/onboard_agent.sh && sh onboard_agent.sh -w ${AZURE_LOG_ANALYTICS_ID} -s ${AZURE_LOG_ANALYTICS_PRIMARY_KEY} -d opinsights.azure.com
             env: 
               AZURE_LOG_ANALYTICS_ID: $(AZURE_LOG_ANALYTICS_ID)
               AZURE_LOG_ANALYTICS_PRIMARY_KEY: $(AZURE_LOG_ANALYTICS_PRIMARY_KEY)
@@ -201,24 +197,15 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: |
-              python3 --version
-              sudo apt-get install zip unzip
+          - script: |         
               cd $(Pipeline.Workspace)/$(BUILD_SELENIUM)
               unzip -o $(Build.BuildId)-selenium.zip
-              ls -la
-              pwd
-              
+
               sudo mkdir -p /home/konradino/logs/tests/selenium
               sudo chmod 777 /home/konradino/logs/tests/selenium
 
-              python3 -u selenium_tests.py 
-              # > /home/konradino/logs/tests/selenium/selenium-tests.log
-
-              ls -la /home/konradino/logs/tests/selenium
-
+              python3 -u selenium_tests.py
             displayName: Run Selenium tests
-            
           - task: PublishPipelineArtifact@1
             displayName: Publish Selenium test logs
             inputs:

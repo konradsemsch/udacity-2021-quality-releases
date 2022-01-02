@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "be2d42fe-79f5-49ff-9f70-fcf5a63db77d",
+		"_postman_id": "3debe945-ef2a-42d0-9ec8-de9b06322d13",
 		"name": "StarterApi_ValidationTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -36,6 +36,12 @@
 							"",
 							"    pm.test(\"Number of records\", () => {",
 							"        pm.expect(jsonData.data.length).to.equal(24);",
+							"    });",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
 							"    });",
 							"",
 							"};"
@@ -98,6 +104,12 @@
 							"        pm.expect(jsonData.data.salary).to.eql(pm.environment.get(\"create_salary\"));",
 							"        pm.expect(jsonData.data.age).to.eql(pm.environment.get(\"create_age\"));",
 							"        pm.expect(jsonData.data.id).to.eql(pm.environment.get(\"create_id\"));",
+							"    });",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
 							"    });",
 							"",
 							"};",
@@ -173,6 +185,12 @@
 							"        pm.expect(jsonData.data.profile_image).to.eql(\"\");",
 							"    });",
 							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
+							"    });",
+							"",
 							"};",
 							""
 						],
@@ -243,6 +261,12 @@
 							"        pm.expect(jsonData.data.age).to.eql(pm.environment.get(\"new_age\"));",
 							"    });",
 							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
+							"    });",
+							"",
 							"};",
 							""
 						],
@@ -263,7 +287,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://dummy.restapiexample.com/api/v1/update/{{id}}",
+					"raw": "http://dummy.restapiexample.com/api/v1/update/{{create_id}}",
 					"protocol": "http",
 					"host": [
 						"dummy",
@@ -298,6 +322,12 @@
 							"",
 							"    pm.test(\"Validate schema\", () => {",
 							"        pm.response.to.have.jsonSchema(schema);",
+							"    });",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
 							"    });",
 							"",
 							"};",

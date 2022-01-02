@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "fb20caaa-0cca-40a4-895b-ee55eeba8da8",
+		"_postman_id": "2a93ad1f-ee7d-4106-aca6-86aeda8b7115",
 		"name": "StarterApi_RegressionTests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -13,10 +13,6 @@
 					"script": {
 						"exec": [
 							"",
-							"pm.test(\"Reponse equals 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
 							"if (pm.response.code === 200) {",
 							"    ",
 							"\tconst jsonData = pm.response.json();",
@@ -27,6 +23,12 @@
 							"",
 							"    pm.test(\"Message is correct\", () => {",
 							"        pm.expect(jsonData.message).to.eql(\"Successfully! All records has been fetched.\");",
+							"    });",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
 							"    });",
 							"",
 							"};",
@@ -64,10 +66,6 @@
 					"script": {
 						"exec": [
 							"",
-							"pm.test(\"Reponse equals 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
 							"if (pm.response.code === 200) {",
 							"",
 							"    const jsonData = pm.response.json();",
@@ -81,6 +79,12 @@
 							"    });",
 							"",
 							"    pm.environment.set(\"create_id\", jsonData.data.id);",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
+							"    });",
 							"",
 							"};"
 						],
@@ -125,10 +129,6 @@
 					"script": {
 						"exec": [
 							"",
-							"pm.test(\"Reponse equals 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
 							"if (pm.response.code === 200) {",
 							"",
 							"    const jsonData = pm.response.json();",
@@ -139,6 +139,12 @@
 							"",
 							"    pm.test(\"Message is correct\", function () {",
 							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been fetched.\");",
+							"    });",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
 							"    });",
 							"",
 							"};",
@@ -184,10 +190,6 @@
 					"script": {
 						"exec": [
 							"",
-							"pm.test(\"Reponse equals 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
 							"if (pm.response.code === 200) {",
 							"",
 							"    const jsonData = pm.response.json();",
@@ -201,6 +203,12 @@
 							"    });",
 							"",
 							"    pm.environment.set(\"create_id\", jsonData.data.id);",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
+							"    });",
 							"",
 							"};",
 							"",
@@ -248,10 +256,6 @@
 					"script": {
 						"exec": [
 							"",
-							"pm.test(\"Reponse equals 200\", () => {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
 							"if (pm.response.code === 200) {",
 							"",
 							"    const jsonData = pm.response.json();",
@@ -262,6 +266,12 @@
 							"",
 							"    pm.test(\"Message is correct\", () => {",
 							"        pm.expect(jsonData.message).to.eql(\"Successfully! Record has been deleted\");",
+							"    });",
+							"",
+							"} else {",
+							"",
+							"    pm.test(\"Reponse equals 429 - more tests couldn't be executed\", () => {",
+							"        pm.response.to.have.status(429);",
 							"    });",
 							"",
 							"};",
