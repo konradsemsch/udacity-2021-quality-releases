@@ -70,10 +70,10 @@ stages:
         cd terraform
         terraform apply -auto-approve
       displayName: Terraform apply
-    # - script: |
-    #     cd terraform
-    #     terraform destroy -auto-approve
-    #   displayName: Terraform destroy
+    - script: |
+        cd terraform
+        terraform destroy -auto-approve
+      displayName: Terraform destroy
 
 - stage: build_code
   displayName: Build
@@ -135,6 +135,7 @@ stages:
               sudo apt-get upgrade -y
               sudo apt-get install -y python3-pip
               sudo apt-get install -y zip unzip
+              sudo apt-get install -y gdb
               sudo apt-get install -y chromium-browser
               sudo apt-get install -y chromium-chromedriver
               
