@@ -73,10 +73,10 @@ stages:
     - script: |
         cd terraform
         terraform destroy -auto-approve
+      displayName: Terraform destroy
     - script: |
         sleep 10m
       displayName: Delay execution
-      displayName: Terraform destroy
 
 - stage: build_code
   displayName: Build
